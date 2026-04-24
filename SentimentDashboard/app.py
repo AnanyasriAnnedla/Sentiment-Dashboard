@@ -9,8 +9,8 @@ import os
 import html
 
 load_dotenv()
-NEWS_API_KEY = os.getenv("NEWSAPI_KEY")
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+NEWS_API_KEY = st.secrets.get("NEWSAPI_KEY") or os.getenv("NEWSAPI_KEY")
+YOUTUBE_API_KEY = st.secrets.get("YOUTUBE_API_KEY") or os.getenv("YOUTUBE_API_KEY")
 
 analyzer = SentimentIntensityAnalyzer()
 
@@ -21,7 +21,6 @@ def get_news(topic):
     return [a["title"] for a in articles if a["title"]]
 
 def get_youtube_comments(topic):
-    # Step 1 — search for videos on the topic
     search_url = "https://www.googleapis.com/youtube/v3/search"
     search_params = {
         "part": "snippet",
@@ -33,7 +32,6 @@ def get_youtube_comments(topic):
     search_response = requests.get(search_url, params=search_params).json()
     video_ids = [item["id"]["videoId"] for item in search_response.get("items", [])]
 
-    # Step 2 — fetch comments from those videos
     comments = []
     for video_id in video_ids:
         comments_url = "https://www.googleapis.com/youtube/v3/commentThreads"
@@ -73,7 +71,6 @@ def get_trends(topic):
     except:
         return None
 
-# ---- UI ----
 st.set_page_config(page_title="Trend Sentinel", layout="wide")
 st.title("😎Trend Sentinel")
 st.markdown("*Is this trend worth riding? Find out before your competitors do.*")
