@@ -1,0 +1,7 @@
+streamlit
+requests
+vaderSentiment
+plotly
+python-dotenv
+pytrends
+google-api-python-client
