@@ -9,8 +9,12 @@ import os
 import html
 
 load_dotenv()
-NEWS_API_KEY = st.secrets.get("NEWSAPI_KEY") or os.getenv("NEWSAPI_KEY")
-YOUTUBE_API_KEY = st.secrets.get("YOUTUBE_API_KEY") or os.getenv("YOUTUBE_API_KEY")
+try:
+    NEWS_API_KEY = st.secrets.get("NEWSAPI_KEY") or os.getenv("NEWSAPI_KEY")
+    YOUTUBE_API_KEY = st.secrets.get("YOUTUBE_API_KEY") or os.getenv("YOUTUBE_API_KEY")
+except Exception:
+    NEWS_API_KEY = os.getenv("NEWSAPI_KEY")
+    YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 analyzer = SentimentIntensityAnalyzer()
 
